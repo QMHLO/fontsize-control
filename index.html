@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      :root {
+        font-size: 10px;
+      }
+      .btn {
+        padding: 10px;
+        background-color: lightgray;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+
+      .is-active {
+        background-color: cyan;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="btn" id="button1">Button 1</button>
+    <button class="btn" id="button2">Button 2</button>
+    <button class="btn" id="button3">Button 3</button>
+
+    <script>
+      const fontSize = 16;
+      let state = localStorage.getItem("font-size") || "standard";
+
+      // Function for button 1
+      function functionOne() {
+        document.querySelector("html").style.fontSize = `${fontSize * 0.625}px`;
+        state = "standard";
+        localStorage.setItem("font-size", "standard");
+        console.log("Function One executed!");
+      }
+
+      // Function for button 2
+      function functionTwo() {
+        document.querySelector("html").style.fontSize = `${fontSize * 0.725}px`;
+        state = "big";
+        localStorage.setItem("font-size", "big");
+        console.log("Function Two executed!");
+      }
+
+      // Function for button 3
+      function functionThree() {
+        document.querySelector("html").style.fontSize = `${fontSize * 0.825}px`;
+        state = "over";
+        localStorage.setItem("font-size", "over");
+        console.log("Function Three executed!");
+      }
+
+      if (state === "standard") {
+        document.querySelector("html").style.fontSize = `${fontSize * 0.625}px`;
+      } else if (state === "big") {
+        document.querySelector("html").style.fontSize = `${fontSize * 0.725}px`;
+      } else if (state === "over") {
+        document.querySelector("html").style.fontSize = `${fontSize * 0.825}px`;
+      }
+
+      // Get all buttons with the class name "btn"
+      var buttons = document.querySelectorAll(".btn");
+
+      // Restore the active state from local storage
+      var activeButtonId = localStorage.getItem("active-button");
+      if (activeButtonId) {
+        var activeButton = document.getElementById(activeButtonId);
+        if (activeButton) {
+          activeButton.classList.add("is-active");
+        }
+      }
+
+      // Add click event listener to each button
+      buttons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          // Remove "is-active" class from all buttons
+          buttons.forEach(function (btn) {
+            btn.classList.remove("is-active");
+          });
+
+          // Add "is-active" class to the clicked button
+          button.classList.add("is-active");
+
+          // Store the active button's id in local storage
+          localStorage.setItem("active-button", button.id);
+
+          // Call the corresponding function based on the clicked button
+          if (button.id === "button1") {
+            functionOne();
+          } else if (button.id === "button2") {
+            functionTwo();
+          } else if (button.id === "button3") {
+            functionThree();
+          }
+        });
+      });
+
+      // Check if there is no active button stored in local storage
+      if (!activeButtonId) {
+        // Auto-click the first button
+        var firstButton = document.getElementById("button1");
+        if (firstButton) {
+          firstButton.click();
+        }
+      }
+    </script>
+  </body>
+</html>
